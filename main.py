@@ -99,6 +99,13 @@ if __name__ == "__main__":
             if 1 <= number1 <= _problems_ and 1 <= number2 <= _problems_:
                 # will download from {number1} to {number2}
                 print(f"Downloading sources from range [{number1}, {number2}]")
+                # go from source {number1} to source {number2}
+                for i in range(number1, number2):
+                    # download the source code from pbinfo website
+                    save_solution(i)
+                print("Solutions from the range you specified were downloaded! Exiting the program.")
+                log("Finished downloading - Application was closed [SUCCESS]\n")
+                exit()
             else:
                 raise ValueError("Both numbers must be between 1 and 5000")
 
