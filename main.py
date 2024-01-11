@@ -4,6 +4,7 @@ import os
 import time
 import shutil
 import requests
+import datetime
 from art import *
 from bs4 import BeautifulSoup
 
@@ -17,6 +18,15 @@ _headers_ = {
 if __name__ == "__main__":
 
     try:
+
+        def log(message):
+            _log_file_ = "script.log"
+            _timestamp_ = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+            try:
+                with open(_log_file_, "a") as log_file:
+                    log_file.write(_timestamp_ + " " + message + "\n")
+            except Exception as e:
+                print(f"Error writing to the log file: {e}")
 
         # print init information
         tprint("codu", font="graffiti")
@@ -39,12 +49,12 @@ if __name__ == "__main__":
             print("Directory for solutions already exists!")
 
         def dl_until(number):
-            if 1 <= number <= 5000:
+            if 1 <= number <= _problems_:
                 _counter_ = 0
                 # will download from 1 to 5000
                 print(f"Downloading {number} sources that are available!")
                 # go from source 0 to source 5000 and check availability
-                for i in range(5000):
+                for i in range(_problems_):
                     # download the source code from pbinfo website
                     _ev_addr_ = f"https://www.pbinfo.ro/?pagina=solutie-oficiala&id={i}"
                     response = requests.get(_ev_addr_, headers=_headers_, cookies=_cookies_)
@@ -67,20 +77,18 @@ if __name__ == "__main__":
                                 _file_ = f"pbinfo/pbinfo-{i}/main.cpp"
                                 with open(_file_, "w", encoding="utf-8") as file:
                                     file.write(extracted_text)
-                                print(f'Downloading source code of the solution for problem with id #{i}')
+                                log(f"Downloaded source code of the solution for problem with id #{i} [SUCCESS]")
                                 _counter_ = _counter_ + 1
                         
                     if _counter_ == number:
                         print("The number of solutions you specified was downloaded! Exiting the program.")
                         exit()
-                    else:
-                        print(f"Number was not hit! {_counter_}")
                     
             else:
                 raise ValueError("Input must be between 1 and 5000")
 
         def dl_range(number1, number2):
-            if 1 <= number1 <= 5000 and 1 <= number2 <= 5000:
+            if 1 <= number1 <= _problems_ and 1 <= number2 <= _problems_:
                 # will download from {number1} to {number2}
                 print(f"Downloading sources from range [{number1}, {number2}]")
             else:
