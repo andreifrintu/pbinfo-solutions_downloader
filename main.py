@@ -33,6 +33,47 @@ if __name__ == "__main__":
     else:
         print("Directory for solutions already exists!")
 
+    def dl_until(number):
+        if 1 <= number <= 5000:
+            # will download from 1 to 5000
+            print(f"Downloading {number} sources that are available!")
+        else:
+            raise ValueError("Input must be between 1 and 5000")
+
+    def dl_range(number1, number2):
+        if 1 <= number1 <= 5000 and 1 <= number2 <= 5000:
+            # will download from {number1} to {number2}
+            print(f"Downloading sources from range [{number1}, {number2}]")
+        else:
+            raise ValueError("Both numbers must be between 1 and 5000")
+
+    while True:
+
+        # check if the user input one, two, or more / less numbers
+        # until it gets a right case (1 or 2 numbers)
+        _problems_input_ = input("Enter the number / range of sources you want to download (space-separated): ").split()
+
+        # only one number input
+        if len(_problems_input_) == 1:
+            try:
+                dl_until(int(_problems_input_[0]))
+                break
+            except ValueError as e:
+                print(f"ERROR: {e}. Please enter a valid number!")
+
+        # two numbers input
+        elif len(_problems_input_) == 2:
+            try:
+                number1, number2 = sorted(map(int, _problems_input_))
+                dl_range(number1, number2)
+                break
+            except ValueError as e:
+                print(f"ERROR: {e}. Please enter valid numbers")
+
+        # worst case, zero or more numbers
+        else:
+            print("ERROR: Invalid input. Please enter either one or two numbers.")
+
     _counter_ = 0
     if _ssid_ != '':
         # for loop through all the problems
