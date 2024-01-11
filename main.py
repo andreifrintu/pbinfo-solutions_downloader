@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 _ua_ = ''
 _problems_ = 5000 # set a number of solutions you want to download
 _ids_ = []
+_unique_ = False
 _counter_ = 0
 _headers_ = {
     'User-Agent': _ua_
@@ -34,7 +35,9 @@ if __name__ == "__main__":
         tprint("codu", font="graffiti")
         input("Press enter to start running the scrapper @ codulluiandrei.ro")
         time.sleep(0.5)
+        _unique_ = True if input("Do you want unique solutions [from codulluiandrei.ro]? (Y/n): ").lower() == 'y' else False
 
+        print("Unique variable was set to " + str(_unique_))
         log("Application was started [SUCCESS]\n")
 
         # get the user account login cookie to connect the scapper
@@ -65,8 +68,15 @@ if __name__ == "__main__":
                 # select the target element from the page content
                 target_element = soup.select_one("#zona-mijloc > div > div:nth-child(12) > div.col-lg-9.col-md-9 > pre")
 
+                # if unique problem selection is set
+                if _unique_:
+                    # edit variable value depending on website availability
+                    _unique_sol_ = False if requests.get(f"https://codulluiandrei.ro/rezolvari/pbinfo/{i}").status_code == 404 else True
+                else:
+                    _unique_sol_ = False
+
                 # if the target element is available download source code
-                if target_element:
+                if target_element and not _unique_sol_:
                     # save the source code inside variable
                     extracted_text = target_element.get_text()
                     # create directory for the new solution
@@ -77,8 +87,8 @@ if __name__ == "__main__":
                         with open(_file_, "w", encoding="utf-8") as file:
                             file.write(extracted_text)
                         _ids_.append(i)
-                    log(f"Downloaded source code of the solution for problem with id #{i} [SUCCESS]")
-                    _counter_ = _counter_ + 1
+                        log(f"Downloaded source code of the solution for problem with id #{i} [SUCCESS]")
+                        _counter_ = _counter_ + 1
 
         def dl_until(number):
             if 1 <= number <= _problems_:
