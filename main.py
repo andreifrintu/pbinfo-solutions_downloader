@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 # global variables for main use
 _ua_ = ''
 _problems_ = 5000 # set a number of solutions you want to download
+_ids_ = []
 _counter_ = 0
 _headers_ = {
     'User-Agent': _ua_
@@ -75,6 +76,7 @@ if __name__ == "__main__":
                         _file_ = f"pbinfo/pbinfo-{i}/main.cpp"
                         with open(_file_, "w", encoding="utf-8") as file:
                             file.write(extracted_text)
+                        _ids_.append(i)
                     log(f"Downloaded source code of the solution for problem with id #{i} [SUCCESS]")
                     _counter_ = _counter_ + 1
 
@@ -89,7 +91,8 @@ if __name__ == "__main__":
                         
                     if _counter_ == number:
                         print("The number of solutions you specified was downloaded! Exiting the program.")
-                        log("Finished downloading - Application was closed [SUCCESS]\n")
+                        log(', '.join(map(str, _ids_)) + "\n")
+                        log("Finished downloading - Application was closed [SUCCESS]\n\n")
                         exit()
                     
             else:
@@ -104,7 +107,8 @@ if __name__ == "__main__":
                     # download the source code from pbinfo website
                     save_solution(i)
                 print("Solutions from the range you specified were downloaded! Exiting the program.")
-                log("Finished downloading - Application was closed [SUCCESS]\n")
+                log(', '.join(map(str, _ids_)) + "\n")
+                log("Finished downloading - Application was closed [SUCCESS]\n\n")
                 exit()
             else:
                 raise ValueError("Both numbers must be between 1 and 5000")
@@ -138,5 +142,5 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("\nCTRL + C pressed! Exiting the program.")
-        log("CTRL + C - Application was closed [SUCCESS]\n")
+        log("CTRL + C - Application was closed [SUCCESS]\n\n")
 
