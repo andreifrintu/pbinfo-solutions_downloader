@@ -6,10 +6,10 @@ Dacă accesul este permis, parcurgând textul și elementele paginii se va selec
 
 ### Coming Updates:
 
-- Număr modificabil de probleme care vor fi descărcate (range, counter)
+- Număr modificabil de probleme care vor fi descărcate (range, counter) ✅
 - Sintaxa diferită a directoarelor și fișierelor create de program
 - Commit & Push într-un repository de GitHub
-- Generarea de fișier log pentru probleme și soluții
+- Generarea de fișier log pentru probleme și soluții ✅
 - Verificarea valabilității pe site înainte de descărcare
 
 ### Instrucțiuni de utilizare
