@@ -35,8 +35,11 @@ if __name__ == "__main__":
         tprint("codu", font="graffiti")
         input("Press enter to start running the scrapper @ codulluiandrei.ro")
         time.sleep(0.5)
+        _optimization_ = True if input("Do you want only needed solutions [for codulluiandrei.ro]? (Y/n): ").lower() == 'y' else False
+        time.sleep(0.5)
         _unique_ = True if input("Do you want unique solutions [from codulluiandrei.ro]? (Y/n): ").lower() == 'y' else False
 
+        print("Optimization variable was set to " + str(_optimization_))
         print("Unique variable was set to " + str(_unique_))
         log("Application was started [SUCCESS]\n")
 
@@ -68,12 +71,15 @@ if __name__ == "__main__":
                 # select the target element from the page content
                 target_element = soup.select_one("#zona-mijloc > div > div:nth-child(12) > div.col-lg-9.col-md-9 > pre")
 
-                # if unique problem selection is set
-                if _unique_:
-                    # edit variable value depending on website availability
-                    _unique_sol_ = False if requests.get(f"https://codulluiandrei.ro/rezolvari/pbinfo/{i}").status_code == 404 else True
-                else:
+                if _optimization_:
                     _unique_sol_ = False
+                else:
+                    # if unique problem selection is set
+                    if _unique_:
+                        # edit variable value depending on website availability
+                        _unique_sol_ = False if requests.get(f"https://codulluiandrei.ro/rezolvari/pbinfo/{i}").status_code == 404 else True
+                    else:
+                        _unique_sol_ = False
 
                 # if the target element is available download source code
                 if target_element and not _unique_sol_:
@@ -122,6 +128,19 @@ if __name__ == "__main__":
                 exit()
             else:
                 raise ValueError("Both numbers must be between 1 and 5000")
+
+        def dl_list(numbers):
+            for i in numbers:
+                save_solution(i)
+            print("All the available needed solutions were downloaded! Exiting the program.")
+            log(', '.join(map(str, _ids_)) + "\n")
+            log("Finished downloading - Application was closed [SUCCESS]\n\n")
+            exit()
+
+        if _optimization_:
+            # download all the solutions found at this web url
+            # list of all needed solutions from 0 to 5000
+            dl_list([int(i) for i in requests.get('https://ajax.codulluiandrei.ro/ajax/needed.php').text.split(',')])
 
         while True:
 
