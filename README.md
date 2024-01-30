@@ -10,7 +10,7 @@ Dacă accesul este permis, parcurgând textul și elementele paginii se va selec
 - Sintaxa diferită a directoarelor și fișierelor create de program
 - Commit & Push într-un repository de GitHub
 - Generarea de fișier log pentru probleme și soluții ✅
-- Verificarea valabilității pe site înainte de descărcare
+- Verificarea valabilității pe site înainte de descărcare ✅
 
 ### Instrucțiuni de utilizare
 
