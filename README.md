@@ -1,5 +1,9 @@
 ### Descarcă sursele oficiale PBinfo - Aplicație pentru 💎 Academia CLA
 
+*Tutorial video de descărcare a surselor necesare CLA folosind aplicația*
+
+https://github.com/user-attachments/assets/9dc9aa38-a8af-41f4-8cc9-a06adab38491
+
 Aplicația, scrisă în Python, folosește un `User Agent` custom și valoarea cookie-ului `SSID` din site-ul PBinfo.ro. Pe baza acestor date, trimite request-uri către toate cele 5000 de probleme (număr ce poate fi modificat), și verifica accesul utilizatorului la sursa oficială (disponibilă dacă a fost obținut anterior cel puțin o dată punctajul maxim, pentru acea problemă).
 
 Dacă accesul este permis, parcurgând textul și elementele paginii se va selecta sursa C++ aflată într-un bloc `<code>` și descărca într-un fișier și folder separat, respectând sintaxa `pbinfo-${id_problema}/main.cpp`.
