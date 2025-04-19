@@ -9,7 +9,7 @@ from art import *
 from bs4 import BeautifulSoup
 
 # global variables for main use
-_ua_ = ''
+_ua_ = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36'
 _problems_ = 5000 # set a number of solutions you want to download
 _ids_ = []
 _unique_ = False
@@ -63,13 +63,13 @@ if __name__ == "__main__":
 
             _ev_addr_ = f"https://www.pbinfo.ro/?pagina=solutie-oficiala&id={i}"
             response = requests.get(_ev_addr_, headers=_headers_, cookies=_cookies_)
-            
+
             if response.status_code == 200:
 
                 # if solution can be found download it
                 soup = BeautifulSoup(response.text, 'html.parser') # extract all html code from the page
                 # select the target element from the page content
-                target_element = soup.select_one("#zona-mijloc > div > div:nth-child(12) > div.col-lg-9.col-md-9 > pre")
+                target_element = soup.select_one("pre.code_cpp")
 
                 if _optimization_:
                     _unique_sol_ = False
@@ -85,6 +85,11 @@ if __name__ == "__main__":
                 if target_element and not _unique_sol_:
                     # save the source code inside variable
                     extracted_text = target_element.get_text()
+
+                    extracted_text = extracted_text.replace('"\n"', '"\\n"')
+                    cleaned_text = "\n".join(line for line in extracted_text.splitlines() if line.strip())
+                    extracted_text = cleaned_text
+
                     # create directory for the new solution
                     if not os.path.isdir(f"pbinfo/pbinfo-{i}"):
                         os.mkdir(f"pbinfo/pbinfo-{i}")
@@ -93,8 +98,13 @@ if __name__ == "__main__":
                         with open(_file_, "w", encoding="utf-8") as file:
                             file.write(extracted_text)
                         _ids_.append(i)
+                        print(f"Downloaded source code of the solution for problem with id #{i} [SUCCESS]")
                         log(f"Downloaded source code of the solution for problem with id #{i} [SUCCESS]")
                         _counter_ = _counter_ + 1
+            else:
+                # if the solution is not available, print error message
+                print(f"Solution for problem with id #{i} was not found! [ERROR]")
+                log(f"Solution for problem with id #{i} was not found! [ERROR]")
 
         def dl_until(number):
             if 1 <= number <= _problems_:
